@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import type {TreeItem} from 'angular/headless/src/generated/components/tree';
+import type {TreeItem} from '@agnos-ui/angular-headless';
 
 @Component({
 	selector: 'au-tree',
