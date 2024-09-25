@@ -90,6 +90,12 @@ export const componentsMetadata: Metadata = {
 			className: 'text-bg-primary',
 		},
 	},
+	Tree: {
+		title: 'Tree',
+		status: 'inprogress',
+		since: 'v0.5.0', // TODO update the version
+		type: 'bootstrap',
+	},
 };
 
 /**
