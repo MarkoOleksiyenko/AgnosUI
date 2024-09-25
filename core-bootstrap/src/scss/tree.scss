@@ -1,0 +1,49 @@
+@use 'variables';
+
+.au-tree {
+	// scss-docs-start tree-css-vars
+	--#{variables.$prefix}tree-expand-button: #{variables.$au-tree-expand-icon-default};
+	--#{variables.$prefix}tree-expand-button-background-color: #{variables.$au-tree-expand-button-background-color};
+	// scss-docs-end tree-css-vars
+
+	.au-tree-item {
+		display: flex;
+		padding-inline-start: #{variables.$au-tree-item-padding-start};
+	}
+
+	.au-tree-item-parent {
+		display: block;
+		padding-inline-start: #{variables.$au-tree-item-padding-start};
+	}
+
+	.au-tree-expand-button-placeholder {
+		display: flex;
+		width: 2.75rem;
+	}
+
+	.au-tree-expand-button {
+		width: 2.25rem;
+		border-radius: 0.375rem;
+		display: inline-flex;
+		border: 0;
+		padding-inline: 0;
+		margin-inline-end: 0.5rem;
+		background-color: var(--#{variables.$prefix}tree-expand-button-background-color);
+
+		&:hover {
+			--#{variables.$prefix}tree-expand-button: #{variables.$au-tree-expand-icon-hover};
+			--#{variables.$prefix}tree-expand-button-background-color: #{variables.$au-tree-expand-button-background-color-hover};
+		}
+	}
+
+	.au-tree-expand-button::after {
+		content: var(--#{variables.$prefix}tree-expand-button);
+		transition: transform 0.3s;
+		margin-inline: auto;
+	}
+
+	/* Expanded state */
+	.au-tree-expand-button-expanded::after {
+		transform: rotate(90deg);
+	}
+}

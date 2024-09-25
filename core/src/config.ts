@@ -10,6 +10,7 @@ import type {ProgressbarProps} from './components/progressbar/progressbar';
 import {identity} from './utils/internal/func';
 import type {SliderProps} from './components/slider/slider';
 import type {ToastProps} from './components/toast/toast';
+import type {TreeProps} from './components/tree/tree';
 
 export type Partial2Levels<T> = Partial<{
 	[Level1 in keyof T]: Partial<T[Level1]>;
@@ -121,4 +122,8 @@ export type WidgetsConfig = {
 	 * toast widget config
 	 */
 	toast: ToastProps;
+	/**
+	 * tree widget config
+	 */
+	tree: TreeProps;
 };
