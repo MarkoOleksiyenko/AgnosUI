@@ -47,6 +47,12 @@ export const componentsMetadata: Metadata = {
 		since: 'v0.5.0',
 		type: 'bootstrap',
 	},
+	Drawer: {
+		status: 'beta',
+		since: 'v',
+		type: 'standalone',
+		includeStyles: true,
+	},
 	Modal: {
 		status: 'stable',
 		since: 'v0.1.1',
@@ -99,6 +105,7 @@ export const componentsMetadata: Metadata = {
 		type: 'standalone',
 		includeStyles: true,
 	},
+	// [content-placeholder]
 };
 
 /**

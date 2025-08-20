@@ -9,6 +9,8 @@ import {Select} from '@agnos-ui/react-bootstrap/components/select';
 import {Slider} from '@agnos-ui/react-bootstrap/components/slider';
 import {Toast} from '@agnos-ui/react-bootstrap/components/toast';
 import {Tree, type TreeItem} from '@agnos-ui/react-bootstrap/components/tree';
+import {Drawer} from '@agnos-ui/react-bootstrap/components/drawer';
+// [import-placeholder]
 
 const nodes: TreeItem[] = [
 	{
@@ -91,5 +93,10 @@ export const App = () => (
 		<div className="my-3">
 			<Tree nodes={nodes} />
 		</div>
+		<h2>Drawer</h2>
+		<div className="my-3">
+			<Drawer />
+		</div>
+		{/* [content-placeholder] */}
 	</div>
 );
