@@ -12,6 +12,7 @@ export * from './components/select';
 export * from './components/slider';
 export * from './components/toast';
 export * from './components/tree';
+export * from './components/sidenav';
 // [export-placeholder]
 // config
 export * from './config';

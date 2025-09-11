@@ -96,6 +96,9 @@ export type {CarouselWidget, CarouselProps, CarouselState, CarouselApi, Carousel
 export {createCarousel, getCarouselDefaultConfig} from './components/carousel';
 export * from './components/carousel';
 
+export type {SidenavProps, SidenavState, SidenavWidget, SidenavApi, SidenavDirectives} from './components/sidenav';
+export {createSidenav, getSidenavDefaultConfig} from './components/sidenav';
+export * from './components/sidenav';
 // [export-placeholder]
 
 export * from '@agnos-ui/core-bootstrap/services/transitions';

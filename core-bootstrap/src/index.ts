@@ -10,6 +10,7 @@ export * from './components/toast';
 export * from './components/collapse';
 export * from './components/tree';
 export * from './components/carousel';
+export * from './components/sidenav';
 // [export-placeholder]
 
 export * from './services/transitions';
