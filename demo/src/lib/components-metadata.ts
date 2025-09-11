@@ -99,6 +99,12 @@ export const componentsMetadata: Metadata = {
 		type: 'standalone',
 		includeStyles: true,
 	},
+	Sidenav: {
+		status: 'inprogress',
+		since: 'v',
+		type: 'standalone',
+		includeStyles: true,
+	},
 	// [content-placeholder]
 };
 
