@@ -1,8 +1,8 @@
 import type {SidenavProps as CoreProps, SidenavState as CoreState, SidenavApi, SidenavDirectives} from '@agnos-ui/core/components/sidenav';
 import {createSidenav as createCoreSidenav, getSidenavDefaultConfig as getCoreDefaultConfig} from '@agnos-ui/core/components/sidenav';
 import {extendWidgetProps} from '@agnos-ui/core/services/extendWidget';
-import type {SlotContent, Widget, WidgetFactory, WidgetSlotContext} from '@agnos-ui/core/types';
-import type {TreeSlotItemContext} from '../tree';
+import type {ConfigValidator, SlotContent, Widget, WidgetFactory, WidgetSlotContext} from '@agnos-ui/core/types';
+import {collapseHorizontalTransition} from '../../services/transitions';
 
 export * from '@agnos-ui/core/components/sidenav';
 
@@ -21,9 +21,17 @@ interface SidenavExtraProps {
 	 */
 	structure: SlotContent<SidenavContext>;
 	/**
-	 * Slot to change the default sidenav item
+	 * Slot to change the default display of the sidenav item
 	 */
-	item: SlotContent<TreeSlotItemContext>;
+	children: SlotContent<SidenavContext>;
+	/**
+	 * Slot to change the default display of the sidenav header
+	 */
+	header: SlotContent<SidenavContext>;
+	/**
+	 * Slot to change the default display of the sidenav footer
+	 */
+	footer: SlotContent<SidenavContext>;
 }
 
 /**
@@ -41,7 +49,9 @@ export type SidenavWidget = Widget<SidenavProps, SidenavState, SidenavApi, Siden
 
 const defaultConfigExtraProps: SidenavExtraProps = {
 	structure: undefined,
-	item: undefined,
+	children: undefined,
+	header: undefined,
+	footer: undefined,
 };
 
 /**
@@ -52,12 +62,25 @@ export function getSidenavDefaultConfig(): SidenavProps {
 	return {...getCoreDefaultConfig(), ...defaultConfigExtraProps};
 }
 
+const configValidator: ConfigValidator<SidenavExtraProps> = {
+	structure: undefined,
+	children: undefined,
+	header: undefined,
+	footer: undefined,
+};
+
+const coreOverride: Partial<CoreProps> = {
+	transition: collapseHorizontalTransition,
+};
+
 /**
  * Create a Sidenav with given config props
  * @param config - an optional Sidenav config
  * @returns a SidenavWidget
  */
-export const createSidenav: WidgetFactory<SidenavWidget> = extendWidgetProps(createCoreSidenav, defaultConfigExtraProps, {
-	structure: undefined,
-	item: undefined,
-});
+export const createSidenav: WidgetFactory<SidenavWidget> = extendWidgetProps(
+	createCoreSidenav,
+	defaultConfigExtraProps,
+	configValidator,
+	coreOverride,
+);

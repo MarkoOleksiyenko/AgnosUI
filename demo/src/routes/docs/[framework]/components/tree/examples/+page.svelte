@@ -1,11 +1,15 @@
 <script lang="ts">
 	import sampleBasic from '@agnos-ui/samples/bootstrap/tree/basic';
+	import sidenavBasic from '@agnos-ui/samples/bootstrap/tree/sidenav';
 	import Sample from '$lib/layout/Sample.svelte';
 	import Section from '$lib/layout/Section.svelte';
 </script>
 
 <Section label="Basic tree" id="basic" level={2}>
 	<Sample title="Basic example" sample={sampleBasic} height={190} noresize />
+</Section>
+<Section label="Sidenav tree" id="sidenav" level={2}>
+	<Sample title="Sidenav example" sample={sidenavBasic} height={190} noresize />
 </Section>
 <Section label="Accessibility" level={2}>
 	<p>

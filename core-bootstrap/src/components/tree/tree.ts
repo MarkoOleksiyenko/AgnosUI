@@ -1,65 +1,88 @@
-import type {TreeProps as CoreProps, TreeState as CoreState, TreeApi, TreeDirectives, NormalizedTreeItem} from '@agnos-ui/core/components/tree';
+import type {TreeProps as CoreProps, TreeState as CoreState, NormalizedTreeItem, TreeApi, TreeDirectives} from '@agnos-ui/core/components/tree';
 import {createTree as createCoreTree, getTreeDefaultConfig as getCoreDefaultConfig} from '@agnos-ui/core/components/tree';
 import {extendWidgetProps} from '@agnos-ui/core/services/extendWidget';
-import type {SlotContent, Widget, WidgetFactory, WidgetSlotContext} from '@agnos-ui/core/types';
+import type {ConfigValidator, PropsConfig, SlotContent, Widget, WidgetSlotContext} from '@agnos-ui/core/types';
 
 export * from '@agnos-ui/core/components/tree';
 
 /**
  * Represents the context for a Tree widget.
  * This interface is an alias for `WidgetSlotContext<TreeWidget>`.
+ *
+ * @template Data - The type of data to pass to slots (if any).
  */
-export type TreeContext = WidgetSlotContext<TreeWidget>;
+export type TreeContext<Data> = WidgetSlotContext<TreeWidget<Data>>;
 /**
  * Represents the context for a tree item, extending the base `TreeContext`
  * with an additional `item` property.
+ *
+ * @template Data - The type of data to pass to slots (if any).
  */
-export type TreeSlotItemContext = TreeContext & {item: NormalizedTreeItem};
+export type TreeSlotItemContext<Data> = TreeContext<Data> & {item: NormalizedTreeItem};
 
-interface TreeExtraProps {
+interface TreeExtraProps<Data> {
 	/**
 	 * Slot to change the default display of the tree
 	 */
-	structure: SlotContent<TreeContext>;
+	structure: SlotContent<TreeContext<Data>>;
 	/**
 	 * Slot to change the default tree item
 	 */
-	item: SlotContent<TreeSlotItemContext>;
+	item: SlotContent<TreeSlotItemContext<Data>>;
 	/**
 	 * Slot to change the default tree item content
 	 */
-	itemContent: SlotContent<TreeSlotItemContext>;
+	itemContent: SlotContent<TreeSlotItemContext<Data>>;
 	/**
 	 * Slot to change the default tree item toggle
 	 */
-	itemToggle: SlotContent<TreeSlotItemContext>;
+	itemToggle: SlotContent<TreeSlotItemContext<Data>>;
+	/**
+	 * Data to use in content slots
+	 */
+	contentData: Data;
 }
 
 /**
  * Represents the state of a Tree component.
+ *
+ * @template Data - The type of data to pass to slots (if any).
  */
-export interface TreeState extends CoreState, TreeExtraProps {}
+export interface TreeState<Data> extends CoreState, TreeExtraProps<Data> {}
 /**
  * Represents the properties for the Tree component.
+ *
+ * @template Data - The type of data to pass to slots (if any).
  */
-export interface TreeProps extends CoreProps, TreeExtraProps {}
+export interface TreeProps<Data> extends CoreProps, TreeExtraProps<Data> {}
 /**
  * Represents a Tree widget component.
+ *
+ * @template Data - The type of data to pass to slots (if any).
  */
-export type TreeWidget = Widget<TreeProps, TreeState, TreeApi, TreeDirectives>;
+export type TreeWidget<Data> = Widget<TreeProps<Data>, TreeState<Data>, TreeApi, TreeDirectives>;
 
-const defaultConfigExtraProps: TreeExtraProps = {
+const defaultConfigExtraProps: TreeExtraProps<any> = {
 	structure: undefined,
 	item: undefined,
 	itemContent: undefined,
 	itemToggle: undefined,
+	contentData: undefined,
+};
+
+const configValidator: ConfigValidator<TreeExtraProps<any>> = {
+	structure: undefined,
+	item: undefined,
+	itemContent: undefined,
+	itemToggle: undefined,
+	contentData: undefined,
 };
 
 /**
  * Retrieve a shallow copy of the default Tree config
  * @returns the default Tree config
  */
-export function getTreeDefaultConfig(): TreeProps {
+export function getTreeDefaultConfig(): TreeProps<any> {
 	return {...getCoreDefaultConfig(), ...defaultConfigExtraProps};
 }
 
@@ -68,9 +91,8 @@ export function getTreeDefaultConfig(): TreeProps {
  * @param config - an optional tree config
  * @returns a TreeWidget
  */
-export const createTree: WidgetFactory<TreeWidget> = extendWidgetProps(createCoreTree, defaultConfigExtraProps, {
-	structure: undefined,
-	item: undefined,
-	itemContent: undefined,
-	itemToggle: undefined,
-});
+export const createTree: <Data>(config?: PropsConfig<TreeProps<Data>>) => TreeWidget<Data> = extendWidgetProps(
+	createCoreTree,
+	defaultConfigExtraProps,
+	configValidator,
+);
