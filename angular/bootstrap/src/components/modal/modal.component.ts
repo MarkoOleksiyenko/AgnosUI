@@ -333,4 +333,10 @@ export class ModalComponent<Data> extends BaseWidgetDirective<ModalWidget<Data>>
 			}),
 		);
 	}
+
+	ngAfterContentInit() {
+		console.log('footer', this.slotFooterFromContent());
+		console.log('header', this.slotHeaderFromContent());
+		console.log('structure', this.slotStructureFromContent());
+	}
 }

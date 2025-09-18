@@ -22,7 +22,7 @@ const ToggleButtonDisplay = ({directive, item}: {directive: TreeDirectives['item
  * @param slotContext - The context object containing the directives and item the toggle.
  * @returns A toggle element with the applied directive.
  */
-export const DefaultTreeSlotItemToggle = (slotContext: TreeSlotItemContext) => {
+export const DefaultTreeSlotItemToggle = <Data,>(slotContext: TreeSlotItemContext<Data>) => {
 	const {directives, item} = slotContext;
 	return item.children.length > 0 ? (
 		<ToggleButtonDisplay directive={directives.itemToggleDirective} item={item} />
@@ -37,7 +37,7 @@ export const DefaultTreeSlotItemToggle = (slotContext: TreeSlotItemContext) => {
  * @param slotContext - The context object containing the item content for display.
  * @returns A tree item element.
  */
-export const DefaultTreeSlotItemContent = (slotContext: TreeSlotItemContext) => {
+export const DefaultTreeSlotItemContent = <Data,>(slotContext: TreeSlotItemContext<Data>) => {
 	const {state, item} = slotContext;
 	return (
 		<span className="au-tree-item">
@@ -54,7 +54,7 @@ export const DefaultTreeSlotItemContent = (slotContext: TreeSlotItemContext) => 
  * @param slotContext - The context object containing the directives and item for the tree item element.
  * @returns A tree root element with the applied directive.
  */
-export const DefaultTreeSlotItem = (slotContext: TreeSlotItemContext) => {
+export const DefaultTreeSlotItem = <Data,>(slotContext: TreeSlotItemContext<Data>) => {
 	const {state, directives, item} = slotContext;
 	return (
 		<li {...useDirective(directives.itemAttributesDirective, {item})}>
@@ -76,7 +76,7 @@ export const DefaultTreeSlotItem = (slotContext: TreeSlotItemContext) => {
  * @param slotContext - The context object containing the directives and items for the tree display.
  * @returns A tree structure with the applied directive.
  */
-export const DefaultTreeSlotStructure = (slotContext: TreeContext) => {
+export const DefaultTreeSlotStructure = <Data,>(slotContext: TreeContext<Data>) => {
 	const {state} = slotContext;
 	return (
 		<ul role="tree" className={clsx('au-tree', state.className)} {...useDirective(slotContext.directives.navigationDirective)}>
@@ -87,7 +87,7 @@ export const DefaultTreeSlotStructure = (slotContext: TreeContext) => {
 	);
 };
 
-const defaultConfig: Partial<TreeProps> = {
+const defaultConfig: Partial<TreeProps<any>> = {
 	structure: DefaultTreeSlotStructure,
 	item: DefaultTreeSlotItem,
 	itemContent: DefaultTreeSlotItemContent,
@@ -102,8 +102,10 @@ const defaultConfig: Partial<TreeProps> = {
  *
  * The Tree component uses the {@link useWidget} hook to create a widget context with the provided
  * configuration. It renders the slot content using the `Slot` component.
+ *
+ * @template Data - The type of data to pass to slots (if any).
  */
-export function Tree(props: Partial<TreeProps>) {
-	const widgetContext = useWidget(createTree, props, {...defaultConfig});
+export function Tree<Data>(props: Partial<TreeProps<Data>>) {
+	const widgetContext = useWidget(createTree<Data>, props, {...defaultConfig});
 	return <Slot slotContent={widgetContext.state.structure} props={widgetContext} />;
 }

@@ -60,7 +60,7 @@ export interface BootstrapWidgetsConfig {
 	/**
 	 * tree widget config
 	 */
-	tree: TreeProps;
+	tree: TreeProps<any>;
 	/**
 	 * carousel widget config
 	 */

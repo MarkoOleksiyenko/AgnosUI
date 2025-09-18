@@ -10,9 +10,9 @@ import {createTree} from './tree.gen';
  * This directive uses a template reference to render the {@link TreeContext}.
  */
 @Directive({selector: 'ng-template[auTreeStructure]'})
-export class TreeStructureDirective {
-	public templateRef = inject(TemplateRef<TreeContext>);
-	static ngTemplateContextGuard(_dir: TreeStructureDirective, context: unknown): context is TreeContext {
+export class TreeStructureDirective<Data> {
+	public templateRef = inject(TemplateRef<TreeContext<Data>>);
+	static ngTemplateContextGuard<Data>(_dir: TreeStructureDirective<Data>, context: unknown): context is TreeContext<Data> {
 		return true;
 	}
 }
@@ -30,8 +30,8 @@ export class TreeStructureDirective {
 		</ng-template>
 	`,
 })
-class TreeDefaultStructureSlotComponent {
-	readonly structure = viewChild.required<TemplateRef<TreeContext>>('structure');
+class TreeDefaultStructureSlotComponent<Data> {
+	readonly structure = viewChild.required<TemplateRef<TreeContext<Data>>>('structure');
 
 	trackNode(index: number, node: NormalizedTreeItem): string {
 		return node.label + node.level + index;
@@ -41,7 +41,7 @@ class TreeDefaultStructureSlotComponent {
 /**
  * A constant representing the default slot for tree structure.
  */
-export const treeDefaultSlotStructure: SlotContent<TreeContext> = new ComponentTemplate(TreeDefaultStructureSlotComponent, 'structure');
+export const treeDefaultSlotStructure: SlotContent<TreeContext<any>> = new ComponentTemplate(TreeDefaultStructureSlotComponent, 'structure');
 
 /**
  * Directive to provide a template reference for tree item toggle.
@@ -49,9 +49,9 @@ export const treeDefaultSlotStructure: SlotContent<TreeContext> = new ComponentT
  * This directive uses a template reference to render the {@link TreeSlotItemContext}.
  */
 @Directive({selector: 'ng-template[auTreeItemToggle]'})
-export class TreeItemToggleDirective {
-	public templateRef = inject(TemplateRef<TreeSlotItemContext>);
-	static ngTemplateContextGuard(_dir: TreeItemToggleDirective, context: unknown): context is TreeSlotItemContext {
+export class TreeItemToggleDirective<Data> {
+	public templateRef = inject(TemplateRef<TreeSlotItemContext<Data>>);
+	static ngTemplateContextGuard<Data>(_dir: TreeItemToggleDirective<Data>, context: unknown): context is TreeSlotItemContext<Data> {
 		return true;
 	}
 }
@@ -73,14 +73,14 @@ export class TreeItemToggleDirective {
 		</ng-template>
 	`,
 })
-class TreeDefaultItemToggleSlotComponent {
-	readonly toggle = viewChild.required<TemplateRef<TreeSlotItemContext>>('toggle');
+class TreeDefaultItemToggleSlotComponent<Data> {
+	readonly toggle = viewChild.required<TemplateRef<TreeSlotItemContext<Data>>>('toggle');
 }
 
 /**
  * A constant representing the default slot for tree item toggle.
  */
-export const treeDefaultItemToggle: SlotContent<TreeSlotItemContext> = new ComponentTemplate(TreeDefaultItemToggleSlotComponent, 'toggle');
+export const treeDefaultItemToggle: SlotContent<TreeSlotItemContext<any>> = new ComponentTemplate(TreeDefaultItemToggleSlotComponent, 'toggle');
 
 /**
  * Directive to provide a template reference for tree item content.
@@ -88,9 +88,9 @@ export const treeDefaultItemToggle: SlotContent<TreeSlotItemContext> = new Compo
  * This directive uses a template reference to render the {@link TreeSlotItemContext}.
  */
 @Directive({selector: 'ng-template[auTreeItemContent]'})
-export class TreeItemContentDirective {
-	public templateRef = inject(TemplateRef<TreeSlotItemContext>);
-	static ngTemplateContextGuard(_dir: TreeItemContentDirective, context: unknown): context is TreeSlotItemContext {
+export class TreeItemContentDirective<Data> {
+	public templateRef = inject(TemplateRef<TreeSlotItemContext<Data>>);
+	static ngTemplateContextGuard<Data>(_dir: TreeItemContentDirective<Data>, context: unknown): context is TreeSlotItemContext<Data> {
 		return true;
 	}
 }
@@ -107,14 +107,14 @@ export class TreeItemContentDirective {
 		</ng-template>
 	`,
 })
-class TreeDefaultItemContentSlotComponent {
-	readonly treeItemContent = viewChild.required<TemplateRef<TreeSlotItemContext>>('treeItemContent');
+class TreeDefaultItemContentSlotComponent<Data> {
+	readonly treeItemContent = viewChild.required<TemplateRef<TreeSlotItemContext<Data>>>('treeItemContent');
 }
 
 /**
  * A constant representing the default slot for tree item.
  */
-export const treeDefaultSlotItemContent: SlotContent<TreeSlotItemContext> = new ComponentTemplate(
+export const treeDefaultSlotItemContent: SlotContent<TreeSlotItemContext<any>> = new ComponentTemplate(
 	TreeDefaultItemContentSlotComponent,
 	'treeItemContent',
 );
@@ -125,9 +125,9 @@ export const treeDefaultSlotItemContent: SlotContent<TreeSlotItemContext> = new 
  * This directive uses a template reference to render the {@link TreeSlotItemContext}.
  */
 @Directive({selector: 'ng-template[auTreeItem]'})
-export class TreeItemDirective {
-	public templateRef = inject(TemplateRef<TreeSlotItemContext>);
-	static ngTemplateContextGuard(_dir: TreeItemDirective, context: unknown): context is TreeSlotItemContext {
+export class TreeItemDirective<Data> {
+	public templateRef = inject(TemplateRef<TreeSlotItemContext<Data>>);
+	static ngTemplateContextGuard<Data>(_dir: TreeItemDirective<Data>, context: unknown): context is TreeSlotItemContext<Data> {
 		return true;
 	}
 }
@@ -150,8 +150,8 @@ export class TreeItemDirective {
 		</ng-template>
 	`,
 })
-class TreeDefaultItemSlotComponent {
-	readonly treeItem = viewChild.required<TemplateRef<TreeSlotItemContext>>('treeItem');
+class TreeDefaultItemSlotComponent<Data> {
+	readonly treeItem = viewChild.required<TemplateRef<TreeSlotItemContext<Data>>>('treeItem');
 
 	trackNode(index: number, node: NormalizedTreeItem) {
 		return node.label + node.level + index;
@@ -161,7 +161,7 @@ class TreeDefaultItemSlotComponent {
 /**
  * A constant representing the default slot for tree item.
  */
-export const treeDefaultSlotItem: SlotContent<TreeSlotItemContext> = new ComponentTemplate(TreeDefaultItemSlotComponent, 'treeItem');
+export const treeDefaultSlotItem: SlotContent<TreeSlotItemContext<any>> = new ComponentTemplate(TreeDefaultItemSlotComponent, 'treeItem');
 
 /**
  * TreeComponent is an Angular component that extends the BaseWidgetDirective
@@ -175,7 +175,7 @@ export const treeDefaultSlotItem: SlotContent<TreeSlotItemContext> = new Compone
 	imports: [SlotDirective],
 	template: ` <ng-template [auSlot]="state.structure()" [auSlotProps]="{state, api, directives}" /> `,
 })
-export class TreeComponent extends BaseWidgetDirective<TreeWidget> {
+export class TreeComponent<Data> extends BaseWidgetDirective<TreeWidget<Data>> {
 	constructor() {
 		super(
 			callWidgetFactory(createTree, {
@@ -250,26 +250,31 @@ export class TreeComponent extends BaseWidgetDirective<TreeWidget> {
 	readonly expandToggle = output<NormalizedTreeItem>({alias: 'auExpandToggle'});
 
 	/**
+	 * Data to use in content slots
+	 */
+	readonly contentData = input<Data>(undefined, {alias: 'auContentData'});
+
+	/**
 	 * Slot to change the default tree item content
 	 */
-	readonly itemContent = input<SlotContent<TreeSlotItemContext>>(undefined, {alias: 'auItemContent'});
+	readonly itemContent = input<SlotContent<TreeSlotItemContext<Data>>>(undefined, {alias: 'auItemContent'});
 	readonly slotItemContentFromContent = contentChild(TreeItemContentDirective);
 
 	/**
 	 * Slot to change the default display of the tree
 	 */
-	readonly structure = input<SlotContent<TreeContext>>(undefined, {alias: 'auStructure'});
+	readonly structure = input<SlotContent<TreeContext<Data>>>(undefined, {alias: 'auStructure'});
 	readonly slotStructureFromContent = contentChild(TreeStructureDirective);
 
 	/**
 	 * Slot to change the default tree item toggle
 	 */
-	readonly itemToggle = input<SlotContent<TreeSlotItemContext>>(undefined, {alias: 'auItemToggle'});
+	readonly itemToggle = input<SlotContent<TreeSlotItemContext<Data>>>(undefined, {alias: 'auItemToggle'});
 	readonly slotItemToggleFromContent = contentChild(TreeItemToggleDirective);
 
 	/**
 	 * Slot to change the default tree item
 	 */
-	readonly item = input<SlotContent<TreeSlotItemContext>>(undefined, {alias: 'auItem'});
+	readonly item = input<SlotContent<TreeSlotItemContext<Data>>>(undefined, {alias: 'auItem'});
 	readonly slotItemFromContent = contentChild(TreeItemDirective);
 }

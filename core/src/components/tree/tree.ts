@@ -10,10 +10,11 @@ import {typeArray, typeFunction, typeString} from '../../utils/writables';
 import type {WidgetsCommonPropsAndState} from '../commonProps';
 import {createWidgetFactory} from '../../utils/widget';
 
+// eslint-disable-next-line jsdoc/require-template
 /**
  * Represents a tree item component.
  */
-export interface TreeItem {
+export interface TreeItem<T extends TreeItem = any> {
 	/**
 	 * Optional accessibility label for the node
 	 */
@@ -21,7 +22,7 @@ export interface TreeItem {
 	/**
 	 * Optional array of children nodes
 	 */
-	children?: TreeItem[];
+	children?: T[];
 	/**
 	 * If `true` the node is expanded
 	 */
