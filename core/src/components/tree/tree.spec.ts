@@ -62,6 +62,7 @@ describe(`Tree`, () => {
 						ariaLabel: 'root',
 						level: 0,
 						isExpanded: false,
+						isEdited: false,
 						children: [
 							{
 								label: 'child',
@@ -69,6 +70,7 @@ describe(`Tree`, () => {
 								level: 1,
 								isExpanded: undefined,
 								children: [],
+								isEdited: false,
 							},
 						],
 					},
@@ -86,5 +88,11 @@ describe(`Tree`, () => {
 
 		expect(state.normalizedNodes[0].isExpanded).toBe(true);
 		expect(itemExpands.length).toEqual(1);
+	});
+
+	test(`should return the TreeItem based on the NormalizedTreeItem`, () => {
+		const newNodes = [{label: 'root', ariaLabel: 'root', children: [{label: 'child', ariaLabel: 'child'}]}];
+		tree.patch({nodes: newNodes});
+		expect(tree.api.getOriginalNode(state.normalizedNodes[0])).toEqual(newNodes[0]);
 	});
 });

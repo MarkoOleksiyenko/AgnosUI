@@ -50,6 +50,10 @@ export interface NormalizedTreeItem extends TreeItem {
 	 * An array of children nodes
 	 */
 	children: NormalizedTreeItem[];
+	/**
+	 * Flag whether the item is being currently edited
+	 */
+	isEdited: boolean;
 }
 
 /**
@@ -58,6 +62,7 @@ export interface NormalizedTreeItem extends TreeItem {
 interface TreeItemInfo {
 	parent: NormalizedTreeItem | undefined;
 	htmlElement?: HTMLElement;
+	originalNode: TreeItem;
 }
 
 interface TreeCommonPropsAndState extends WidgetsCommonPropsAndState {}
@@ -121,8 +126,13 @@ export interface TreeState extends TreeCommonPropsAndState {
 /**
  * Interface representing the API for a Tree component.
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface TreeApi {}
+export interface TreeApi {
+	/**
+	 * Method to get the TreeItem from the input from the NormalizedTreeItem
+	 * @returns TreeItem that corresponds to the given NormalizedTreeItem
+	 */
+	getOriginalNode(normalizedItem: NormalizedTreeItem): TreeItem | undefined;
+}
 
 /**
  * Interface representing various directives used in the Tree component.
@@ -224,10 +234,12 @@ export const createTree: WidgetFactory<TreeWidget> = createWidgetFactory('tree',
 			ariaLabel: node.ariaLabel ?? node.label,
 			level,
 			children: [],
+			isEdited: false,
 			isExpanded: node.children?.length ? (node.isExpanded ?? false) : undefined,
 		};
 		treeMap.set(copyNode, {
 			parent,
+			originalNode: node,
 		});
 
 		if (node.children) {
@@ -306,6 +318,13 @@ export const createTree: WidgetFactory<TreeWidget> = createWidgetFactory('tree',
 			keydown: (event: KeyboardEvent) => {
 				const {key} = event;
 				const {item} = treeItemContext$();
+
+				// Don't handle keyboard shortcuts if user is editing in an input
+				const target = event.target as HTMLElement;
+				if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+					return;
+				}
+
 				const isExpanded = item.isExpanded;
 				refreshElements(); // collapsed items were added to the dom
 				switch (key) {
@@ -372,7 +391,11 @@ export const createTree: WidgetFactory<TreeWidget> = createWidgetFactory('tree',
 	const widget: TreeWidget = {
 		...stateStores({normalizedNodes$, expandedMap$, ...stateProps}),
 		patch,
-		api: {},
+		api: {
+			getOriginalNode(normalizedItem: NormalizedTreeItem) {
+				return treeMap.get(normalizedItem)?.originalNode;
+			},
+		},
 		directives: {
 			navigationDirective: bindDirective(navDirective, navManagerConfig$),
 			itemToggleDirective: mergeDirectives(treeItemElementDirective, itemToggleAttributesDirective),
